@@ -1,7 +1,7 @@
 # image: node:8.11.4
 
 pages:
-    stage: main
+    stage: deploy
     script:
         - cp -rv src/zya.js public
     artifacts:
