@@ -3,7 +3,7 @@
 pages:
     stage: deploy
     script:
-        - cp -rv src/zya.js public
+        - cp -rv src/ public
     artifacts:
         paths:
             - public
