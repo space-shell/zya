@@ -1,0 +1,22 @@
+#!/bin/bash
+
+dev() {
+	live-server --host=0.0.0.0 --no-browser
+}
+
+test() {
+	node zyborg.test.js
+}
+
+deploy() {
+	git add -A && git commit -m "$1" && git pull me master && git push me master
+}
+
+case $1 in
+	dev) dev $2;;
+	deploy) deploy $2;;
+	test) test;;
+
+	*) echo "Usage: $0 dev | test | deploy"
+esac
+
