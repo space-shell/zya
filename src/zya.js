@@ -14,7 +14,7 @@ export default class Zya extends HTMLElement {
 	}
 
 	connectedCallback() {
-		Zya.NODES.push(this.stream)
+		Zya.NODES.push(this.stream.bind(this))
 
 		const streaming = (async() => {
 			for await(const i of Zya.NODES.reduce((stream, f) =>
@@ -50,5 +50,5 @@ Object.assign(Zya, {
 		}
 
 	}
-})
+}
 
