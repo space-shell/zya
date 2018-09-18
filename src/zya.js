@@ -19,7 +19,7 @@ export default class Zya extends HTMLElement {
 
 		Zya.STYLES[this.name] = !!((
 				less && less.render
-				|| css => Promise.resolve({ css })
+				|| (css => Promise.resolve({ css }))
 			)(style).then(({ css }) =>
 				document.head.insertAdjacentHTML('beforeend', `
 					<style id=${ this.name }>
