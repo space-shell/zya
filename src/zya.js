@@ -1,8 +1,28 @@
 export default class Zya extends HTMLElement {
-	constructor ({ css }) {
+	constructor ({ css } = {}) {
 		super()
 
-		console.log(css)
+		this.name = 
+			this.constructor.name === 'Zya'
+				? Math.random()
+					.toString(36)
+					.substring(2)
+				: this.constructor.name
+
+		css
+			&& !Zya.STYLES[this.name]
+			&& this.cssAttach(css)
+	}
+
+	cssAttach (style) {
+		const compiler = less ? less.render : css => Promise.resolve({ css })
+
+		Zya.STYLES[this.name] = !!(
+			compiler(style).then(({ css }) =>
+				document.head.insertAdjacentHTML('beforeend', `
+					<style id=${ this.name }>
+						${ css }
+					</style> `) ) )
 	}
 
 	dispatch (action) {
@@ -36,6 +56,8 @@ Object.assign(Zya, {
 	ARCHIVE: [],
 
 	NODES: [],
+
+	STYLES: {},
 
 	STREAMER: {
 		async * [Symbol.asyncIterator] () {
