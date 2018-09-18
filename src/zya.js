@@ -4,8 +4,6 @@ export default class Zya extends HTMLElement {
 	}
 
 	dispatch (action) {
-		console.log('Dispatched... ', action)
-
 		Zya.RESOLVE && Zya.RESOLVE()
 
 		Zya.STREAM.push(action)
