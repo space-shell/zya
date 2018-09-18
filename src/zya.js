@@ -50,5 +50,5 @@ Object.assign(Zya, {
 		}
 
 	}
-}
+})
 
