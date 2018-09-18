@@ -1,6 +1,8 @@
 export default class Zya extends HTMLElement {
-	constructor () {
+	constructor ({ css }) {
 		super()
+
+		console.log(css)
 	}
 
 	dispatch (action) {
