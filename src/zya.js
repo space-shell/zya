@@ -17,10 +17,8 @@ export default class Zya extends HTMLElement {
 	cssAttach (style) {
 		const compiler = less ? less.render : css => Promise.resolve({ css })
 
-		Zya.STYLES[this.name] = !!((
-				less && less.render
-				|| (css => Promise.resolve({ css }))
-			)(style).then(({ css }) =>
+		Zya.STYLES[this.name] = !!(
+			less.render(style).then(({ css }) =>
 				document.head.insertAdjacentHTML('beforeend', `
 					<style id=${ this.name }>
 						${ css }
