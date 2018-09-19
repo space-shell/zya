@@ -11,10 +11,11 @@ customElements.define('test-comp', Zya(
 		}
 
 		wtf (data) {
-			// console.log(this, this.info, this.info)
+			console.log('wtf')
 
-			return { callbk: 'Good?' }
+			return { callbk: 'Good?', wtf: data }
 		}
+
 
 		connectedCallback () {
 			this.render({})

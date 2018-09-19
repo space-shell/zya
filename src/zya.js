@@ -20,18 +20,13 @@ export default Zya = (Component) => class extends Component {
 
 	async * stream (data) {
 		for await(const obj of data) {
-			yield Object.keys(obj).reduce(async (streamback, key) => {
+			yield * Object.keys(obj).map(key => {
 				try {
-					// this[key](obj[key])
-
-					const prom = await this[key](obj[key])
+					return this[key](obj[key])
 				} catch (e) {
-					console.log(e)
+					return obj
 				}
-
-			}, {})
-
-			// yield { obj, ...promises }
+			})
 		}
 	}
 }
