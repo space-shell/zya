@@ -1,3 +1,21 @@
-import Zyborg from './zyborg.js'
+class a {
+	constructor () {
 
-console.log(Zyborg)
+	}
+}
+
+class b extends a {
+	constructor () {
+		super()
+
+	}
+}
+
+class c extends b {
+	constructor () {
+		super()
+
+	}
+}
+
+new c()

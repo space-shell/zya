@@ -1,49 +1,38 @@
-export default class Zya extends HTMLElement {
-	constructor ({ css } = {}) {
+let Zya
+
+export default Zya = (Component) => class extends Component {
+	constructor () {
 		super()
 
-		this.name = 
-			this.constructor.name === 'Zya'
-				? Math.random()
-					.toString(36)
-					.substring(2)
-				: this.constructor.name
+		Zya.NODES.push(this.stream.bind(this))
 
-		css
-			&& !Zya.STYLES[this.name]
-			&& this.cssAttach(css)
+		;(async () => {
+			for await(const i of Zya.NODES.reduce((stream, f) =>
+				f(stream), Zya.STREAMER));
+		})().then(after => console.log)
 	}
 
-	cssAttach (style) {
-		const compiler = less ? less.render(style) : Promise.resolve({ css: style })
-
-		Zya.STYLES[this.name] = !!(
-			compiler.then(({ css }) =>
-				document.head.insertAdjacentHTML('beforeend', `
-					<style id=${ this.name }>
-						${ css }
-					</style> `) ) )
-	}
-
-	dispatch (action) {
+	$dispatch (action) {
 		Zya.RESOLVE && Zya.RESOLVE()
 
 		Zya.STREAM.push(action)
 	}
 
-	async * stream (stream) {
-		yield * stream
-	}
+	async * stream (data) {
+		for await(const obj of data) {
+			yield Object.keys(obj).reduce(async (streamback, key) => {
+				try {
+					// this[key](obj[key])
 
-	connectedCallback() {
-		Zya.NODES.push(this.stream.bind(this))
+					const prom = await this[key](obj[key])
+				} catch (e) {
+					console.log(e)
+				}
 
-		const streaming = (async() => {
-			for await(const i of Zya.NODES.reduce((stream, f) =>
-				f(stream), Zya.STREAMER)) { /* console.log(i) */ }
-		})().then(after => console.log)
+			}, {})
 
-		this.connected()
+			// yield { obj, ...promises }
+		}
 	}
 }
 
