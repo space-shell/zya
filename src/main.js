@@ -1,4 +1,9 @@
 import Zya from './zya.js'
+import PointerEvents from './processes/zya-pointer-events.js'
+
+const mm = Zya(PointerEvents)
+
+console.log(new mm())
 
 customElements.define('test-comp', Zya(
 	class extends HTMLElement {
@@ -18,6 +23,12 @@ customElements.define('test-comp', Zya(
 
 		callbk () {
 			console.log('Called')
+
+			return {}
+		}
+
+		pointerMove (data) {
+			console.log(data)
 
 			return {}
 		}

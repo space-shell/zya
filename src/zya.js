@@ -14,7 +14,7 @@ export default Zya = (Component) => class extends Component {
 			.toString(36)
 			.substring(2)
 
-		this.ELEMS[this['ℤ']] = this
+		Zya.ELEMS[this['ℤ']] = this
 
 		Zya.NODES.push(this.stream.bind(this))
 
