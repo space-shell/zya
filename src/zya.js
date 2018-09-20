@@ -1,3 +1,7 @@
+// http://www.stackoverflow.com/questions/45747646/what-is-the-es5-way-of-writing-web-component-classes
+
+// TODO - JN - Check for Class or function for prototypal inheritance
+ 
 let Zya
 
 export default Zya = (Component) => class extends Component {
@@ -20,12 +24,13 @@ export default Zya = (Component) => class extends Component {
 
 	async * stream (data) {
 		for await(const obj of data) {
+			Zya.ARCHIVE.push(obj)
+
 			yield * Object.keys(obj).map(key => {
-				try {
-					return this[key](obj[key])
-				} catch (e) {
+				if (this[key])
+					this[key](obj[key])
+				else
 					return obj
-				}
 			})
 		}
 	}
@@ -39,9 +44,9 @@ Object.assign(Zya, {
 
 	ARCHIVE: [],
 
-	NODES: [],
+	PROCESSORS: [], // AKA Plugins
 
-	STYLES: {},
+	NODES: [],
 
 	STREAMER: {
 		async * [Symbol.asyncIterator] () {
