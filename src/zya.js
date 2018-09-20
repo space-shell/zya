@@ -1,12 +1,21 @@
 // http://www.stackoverflow.com/questions/45747646/what-is-the-es5-way-of-writing-web-component-classes
 
-// TODO - JN - Check for Class or function for prototypal inheritance
+// NOTE - JN - ℤ !== Z
+// TODO - JN - Check for Class or Function for prototypal inheritance
  
 let Zya
 
 export default Zya = (Component) => class extends Component {
 	constructor () {
 		super()
+
+		this['ℤ'] = parseInt(
+			Math
+				.random()
+				.toString(36)
+				.substring(7) )
+
+		Zya.ELEMS[ℤ] = this
 
 		Zya.NODES.push(this.stream.bind(this))
 
@@ -16,7 +25,7 @@ export default Zya = (Component) => class extends Component {
 		})().then(after => console.log)
 	}
 
-	$dispatch (action) {
+	$dispatch (action, route) {
 		Zya.RESOLVE && Zya.RESOLVE()
 
 		Zya.STREAM.push(action)
@@ -25,6 +34,8 @@ export default Zya = (Component) => class extends Component {
 	async * stream (data) {
 		for await(const obj of data) {
 			Zya.ARCHIVE.push(obj)
+
+			// TODO - JN - First key specifies destination eg self, global, <link id>
 
 			yield * Object.keys(obj).map(key => {
 				if (this[key])
@@ -53,16 +64,16 @@ Object.assign(Zya, {
 	NODES: [],
 
 	STREAMER: {
+		pause: null,
+
 		async * [Symbol.asyncIterator] () {
 			while (true) {
 				while(Zya.STREAM.length)
 					yield Zya.STREAM.shift()
 
-				await new Promise(res => Zya.RESOLVE = res)
+				await new Promise(resolve => this.pause = resolve)
 
-				Zya.RESOLVE = null
-
-				// Loop end
+				this.pause = null
 			}
 		}
 
