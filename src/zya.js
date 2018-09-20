@@ -9,11 +9,10 @@ export default Zya = (Component) => class extends Component {
 	constructor () {
 		super()
 
-		this['ℤ'] = parseInt(
-			Math
-				.random()
-				.toString(36)
-				.substring(7) )
+		this['ℤ'] = Math
+			.random()
+			.toString(36)
+			.substring(2)
 
 		Zya.ELEMS[this['ℤ']] = this
 
@@ -59,9 +58,11 @@ Object.assign(Zya, {
 
 	ARCHIVE: [],
 
-	PROCESSORS: [], // AKA Plugins
+	PROCESSES: [], // AKA Plugins
 
 	NODES: [],
+
+	ELEMS: {},
 
 	STREAMER: {
 		pause: null,
