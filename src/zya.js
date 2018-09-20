@@ -28,7 +28,11 @@ export default Zya = (Component) => class extends Component {
 
 			yield * Object.keys(obj).map(key => {
 				if (this[key])
-					this[key](obj[key])
+					try {
+						this[key](obj[key])
+					} catch (e) {
+						console.log(e)
+					}
 				else
 					return obj
 			})
