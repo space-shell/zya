@@ -1,6 +1,6 @@
 export default class {
 	constructor () {
-		super()
+		console.log(this)
 
 		document.addEventListener('mousemove', evt => this.$dispatch({ pointerMove: evt }), false)
 		document.addEventListener('touchmove', evt => this.$dispatch({ pointerMove: evt }), false)
@@ -10,3 +10,4 @@ export default class {
 		document.addEventListener('touchstart', evt => this.$dispatch({ pointerDown: evt }), false)
 	}
 }
+
