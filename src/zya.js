@@ -9,19 +9,13 @@ export default Zya = (Component) => class extends Component {
 	constructor () {
 		super()
 
-		this['ℤ'] = Math
-			.random()
-			.toString(36)
-			.substring(2)
-
-		Zya.ELEMS[this['ℤ']] = this
 
 		Zya.NODES.push(this.stream.bind(this))
 
 		;(async () => {
 			for await(const i of Zya.NODES.reduce((stream, f) =>
 				f(stream), Zya.STREAMER));
-		})().then(after => console.log)
+		})().then(console.log)
 	}
 
 	$dispatch (action, route) {
@@ -39,7 +33,7 @@ export default Zya = (Component) => class extends Component {
 			yield * Object.keys(obj).map(key => {
 				if (this[key])
 					try {
-						this[key](obj[key])
+						return this[key](obj[key] || {})
 					} catch (e) {
 						console.log(e)
 					}
