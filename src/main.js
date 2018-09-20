@@ -16,6 +16,12 @@ customElements.define('test-comp', Zya(
 			return { callbk: 'Good?', wtf: data }
 		}
 
+		callbk () {
+			console.log('Called')
+
+			return {}
+		}
+
 
 		connectedCallback () {
 			this.render({})

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 dev() {
-	live-server --host=0.0.0.0 --no-browser
+	live-server src --host=0.0.0.0 --no-browser
 }
 
 test() {
