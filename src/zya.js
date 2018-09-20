@@ -68,8 +68,6 @@ Object.assign(Zya, {
 		pause: null,
 
 		async * [Symbol.asyncIterator] () {
-			console.log(this)
-
 			while (true) {
 				while(Zya.STREAM.length)
 					yield Zya.STREAM.shift()
