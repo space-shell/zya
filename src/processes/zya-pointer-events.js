@@ -1,11 +1,11 @@
 export default class {
 	constructor () {
-		document.addEventListener('mousemove', evt => this.mouseMove(evt), false)
-		document.addEventListener('touchmove', evt => this.touchMove(evt), false)
-		document.addEventListener('mousedown', evt => this.mouseDown(evt), false)
-		document.addEventListener('touchstart', evt => this.touchStart(evt), false)
-		document.addEventListener('mouseup', evt => this.mouseUp(evt), false)
-		document.addEventListener('touchend', evt => this.touchEnd(evt), false)
+		document.addEventListener('mousemove', evt => this.mouseMove(evt), true)
+		document.addEventListener('touchmove', evt => this.touchMove(evt), true)
+		document.addEventListener('mousedown', evt => this.mouseDown(evt), true)
+		document.addEventListener('touchstart', evt => this.touchStart(evt), true)
+		document.addEventListener('mouseup', evt => this.mouseUp(evt), true)
+		document.addEventListener('touchend', evt => this.touchEnd(evt), true)
 
 		this.currentTarget = null
 	}
