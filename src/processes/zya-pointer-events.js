@@ -10,7 +10,7 @@ export default class {
 		this.currentTarget = null
 	}
 
-	async mouseMove ({ target, x, y, movementX, movementY }) {
+	mouseMove ({ target, x, y, movementX, movementY }) {
 		// TODO - JN - Craeat a tap into the stream
 
 		// const stream = this.$dispatch({ pointerMove: { target, x, y, movementX, movementY } })
@@ -25,7 +25,6 @@ export default class {
 		
 		// TODO - JN - Remove State Management
 		if (target !== this.currentTarget) {
-			console.log('Target is now ', target)
 			this.currentTarget = target
 
 			this.$dispatch({ pointerTarget: { target } })
