@@ -1,14 +1,12 @@
+// NOTE - JN - ℤ !== Z
+//
+// TODO - JN - Check for Class or Function for prototypal inheritance
 // http://www.stackoverflow.com/questions/45747646/what-is-the-es5-way-of-writing-web-component-classes
 
-// NOTE - JN - ℤ !== Z
-// TODO - JN - Check for Class or Function for prototypal inheritance
- 
-let Zya
-
-export default Zya = (Component) => class extends Component {
+const Zya = (Component) => class extends Component {
 	constructor () {
 		super()
-	
+
 		this['ℤ'] = Math
 			.random()
 			.toString(36)
@@ -65,8 +63,6 @@ Object.assign(Zya, {
 	ELEMS: {},
 
 	STREAMER: {
-		pause: null,
-
 		async * [Symbol.asyncIterator] () {
 			while (true) {
 				while(Zya.STREAM.length)
@@ -81,3 +77,4 @@ Object.assign(Zya, {
 	}
 })
 
+export default Zya
