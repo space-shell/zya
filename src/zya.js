@@ -22,28 +22,39 @@ const Zya = (Component) => class extends Component {
 		})().then(console.log)
 	}
 
-	$dispatch (action, route) {
+	$dispatch (action) {
 		Zya.RESOLVE && Zya.RESOLVE()
+
+
+		if (Object.keys(action).length !== 0 && action.constructor === Object)
+			Object.assign(action, { origin: this['ℤ'] })
 
 		Zya.STREAM.push(action)
 	}
 
 	async * stream (data) {
-		for await(const obj of data) {
-			Zya.ARCHIVE.push(obj)
+		for await(const { route, origin, ...obj } of data) {
+			// Zya.ARCHIVE.push({ [route]: obj })
 
-			// TODO - JN - First key specifies destination eg self, global, <link id>
+			console.log(this['ℤ'] === origin)
 
-			yield * Object.keys(obj).map(key => {
-				if (this[key])
-					try {
-						return this[key](obj[key])
-					} catch (e) {
-						console.log(e)
-					}
-				else
-					return obj
-			})
+			// FIXME - JN - Routes to the last button
+
+			if ( !route
+					|| (route && route === this.dataset.zya)
+					|| (route === 'self' && origin === this['ℤ']) )
+				yield * Object.keys(obj).map(key => {
+					if (this[key])
+						try {
+							return this[key](obj[key])
+						} catch (e) {
+							console.log(e)
+						}
+					else
+						return obj
+				})
+			else
+				yield { obj, origin, route }
 		}
 	}
 }
