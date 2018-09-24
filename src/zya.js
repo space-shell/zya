@@ -22,13 +22,13 @@ const Zya = (Component) => class extends Component {
 		})().then(console.log)
 	}
 
-	$dispatch (action) {
+	$dispatch (action, route) {
 		Zya.RESOLVE && Zya.RESOLVE()
 
 		if (Object.keys(action).length !== 0 && action.constructor === Object)
 			Object.assign(action, { origin: this['ℤ'] })
 
-		Zya.STREAM.push(action)
+		Zya.STREAM.push({ ...action, route })
 	}
 
 	async * stream (data) {
@@ -36,16 +36,15 @@ const Zya = (Component) => class extends Component {
 			if (origin === this['ℤ'])
 				Zya.ARCHIVE.push({ [origin]: { ...obj, route } })
 
+			// TODO - JN - Revise routing into true or false
 			if ( !route
 					|| route === this.dataset.zya // TODO - JN - Remove DOM Reference
 					|| (route === 'self' && origin === this['ℤ']) )
 				yield * Object.keys(obj).map(key => {
 					if (this[key])
 						try {
-							const backStream = this[key](obj[key])
-
 							return {
-								...backStream,
+								...this[key](obj[key]),
 								[key]: obj[key],
 								origin,
 								route
