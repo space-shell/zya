@@ -7,6 +7,8 @@ const Zya = (Component) => class extends Component {
 	constructor () {
 		super()
 
+		this.$state = {}
+
 		this['ℤ'] = Math
 			.random()
 			.toString(36)
@@ -41,6 +43,8 @@ const Zya = (Component) => class extends Component {
 					|| route === this.dataset.zya // TODO - JN - Remove DOM Reference
 					|| (route === 'self' && origin === this['ℤ']) )
 				yield * Object.keys(obj).map(key => {
+					this.$state[key] = obj[key]
+
 					if (this[key])
 						try {
 							return {
@@ -66,6 +70,8 @@ const Zya = (Component) => class extends Component {
 
 Object.assign(Zya, {
 	RESOLVE: null,
+
+	STATE: {},
 
 	STREAM: [],
 
