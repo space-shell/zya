@@ -36,7 +36,7 @@ customElements.define('test-comp', Zya(
 
 		render({ message }) {
 			hyperHTML.bind(this)`
-				<button onclick=${() => this.$dispatch({ wtf: 'google', route: 'self' })}>${ this.dataset.id }</botton>
+				<button onclick=${() => this.$dispatch({ wtf: 'google' }, 'one|')}>${ this.dataset.id }</botton>
 			`
 		}
 	}
