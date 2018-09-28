@@ -45,21 +45,18 @@ const Zya = (Component) => class extends Component {
 				yield * Object.keys(obj).map(key => {
 					this.$state[key] = obj[key]
 
-					if (this[key])
-						try {
-							return {
-								...this[key](obj[key]),
-								[key]: obj[key],
-								origin,
-								route
-							}
-						} catch (e) {
-							console.log(e)
-
-							return { [key]: obj[key], origin, route }
+					try {
+						return {
+							...this[key](obj[key]),
+							[key]: obj[key],
+							origin,
+							route
 						}
-					else
+					} catch (e) {
+						console.log(e)
+
 						return { [key]: obj[key], origin, route }
+					}
 				})
 			else
 				yield { ...obj, origin, route }
