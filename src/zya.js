@@ -14,18 +14,12 @@ const Zya = (Component) => class extends Component {
 			.toString(36)
 			.substring(2)
 
-		Zya.ELEMS[this['ℤ']] = this
-
 		Zya.NODES.push(this.stream.bind(this))
 
 		;(async () => {
 			for await(const i of Zya.NODES.reduce((stream, f) =>
 				f(stream), Zya.STREAMER));
 		})().then(console.log)
-	}
-
-	get $routed () {
-		return 
 	}
 
 	$dispatch (action, route = true) {
@@ -44,6 +38,8 @@ const Zya = (Component) => class extends Component {
 
 			if ( route || (route === false && origin === this['ℤ']) )
 				yield * Object.keys(obj).map(key => {
+					// Sets dispatch values to the objects state
+					// Will replace this with stream injection
 					this.$state[key] = obj[key]
 
 					if (this[key])
@@ -83,8 +79,6 @@ Object.assign(Zya, {
 	PROCESSES: [], // AKA Plugins
 
 	NODES: [],
-
-	ELEMS: {},
 
 	STREAMER: {
 		async * [Symbol.asyncIterator] () {
