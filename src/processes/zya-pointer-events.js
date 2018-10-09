@@ -1,58 +1,70 @@
-export default class {
-	constructor () {
-		document.addEventListener('mousemove', evt => this.mouseMove(evt), true)
-		document.addEventListener('touchmove', evt => this.touchMove(evt), true)
-		document.addEventListener('mousedown', evt => this.mouseDown(evt), true)
-		document.addEventListener('touchstart', evt => this.touchStart(evt), true)
-		document.addEventListener('mouseup', evt => this.mouseUp(evt), true)
-		document.addEventListener('touchend', evt => this.touchEnd(evt), true)
+export default async function * (stream, dispatch) {
+	let currentTarget
 
-		this.currentTarget = null
-	}
+	const mouseMove = ({ target, x, y, movementX, movementY }) => {
+		if (target !== currentTarget) {
+			currentTarget = target
 
-	mouseMove ({ target, x, y, movementX, movementY }) {
-		// TODO - JN - Craeat a tap into the stream
-
-		// const stream = this.$dispatch({ pointerMove: { target, x, y, movementX, movementY } })
-
-		// for await (const { pointerMove } of stream) {
-		// 	console.log(pointerMove.target, target)
-		// 	if (target !== pointerMove.target)
-		// 		console.log(pointerMove.targetNew)
-		// }
-
-		this.$dispatch({ pointerMove: { target, x, y, movementX, movementY } })
-		
-		// TODO - JN - Remove State Management
-		if (target !== this.currentTarget) {
-			this.currentTarget = target
-
-			this.$dispatch({ pointerTarget: { target } })
+			dispatch({ pointerTarget: { target } })
 		}
 	}
 
-	touchMove ({ target }) {
-		this.$dispatch({ pointerMove: { target } })
-	}
+	document.onmousedown = ({ target, x, y }) =>
+		dispatch({ pointerDown: { target, x, y } })
 
-	mouseDown ({ target, x, y }) {
+	document.ontouchstart = ({ target }) =>
+		dispatch({ pointerDown: { target } })
 
-		this.$dispatch({ pointerDown: { target, x, y } })
-	}
+	document.onmouseMove = ({ target, x, y, movementX, movementY }) =>
+		dispatch({ pointerMove: { target, x, y, movementX, movementY } })
 
-	touchStart({ target }) {
+	document.ontouchMove = ({ target }) =>
+		dispatch({ pointerMove: { target } })
 
-		this.$dispatch({ pointerDown: { target } })
-	}
+	document.onmouseup = ({ target, x, y }) =>
+		dispatch({ pointerUp: { target, x, y } })
 
-	mouseUp ({ target, x, y }) {
+	document.ontouchend = ({ target }) =>
+		dispatch({ pointerUp: { target } })
 
-		this.$dispatch({ pointerUp: { target, x, y } })
-	}
+	yield * stream
 
-	touchEnd ({ target }) {
+	// for await (const { pointerDown, ...rest } of stream) {
+	// 	if (pointerDown) {
+	// 		for await (const { pointerMove, pointerUp, ...rest } of stream) {
+	// 			if (pointerMove)
+	// 				yield {
+	// 					drag: {
+	// 						target: pointerDown.target,
 
-		this.$dispatch({ pointerUp: { target } })
-	}
+	// 						start: {
+	// 							x: pointerDown.screenX,
+	// 							y: pointerDown.screenY,
+	// 						},
+
+	// 						current: {
+	// 							x: pointerMove.screenX,
+	// 							y: pointerMove.screenY,
+	// 						},
+
+	// 						delta: {
+	// 							x: pointerMove.screenX - pointerDown.screenX,
+	// 							y: pointerMove.screenY - pointerDown.screenY,
+	// 						}
+	// 					}
+	// 				}
+
+	// 			if (pointerUp) {
+	// 				yield { drop: pointerUp }
+
+	// 				break
+	// 			}
+
+	// 			yield { pointerMove, pointerUp, ...rest }
+	// 		}
+	// 	}
+
+	// 	yield { pointerDown, ...rest }
+	// }
 }
 

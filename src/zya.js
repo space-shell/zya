@@ -7,8 +7,6 @@ const Zya = (Component) => class extends Component {
 	constructor () {
 		super()
 
-		this.$state = {}
-
 		this['ℤ'] = Math
 			.random()
 			.toString(36)
@@ -16,10 +14,7 @@ const Zya = (Component) => class extends Component {
 
 		Zya.NODES.push(this.stream.bind(this))
 
-		;(async () => {
-			for await(const i of Zya.NODES.reduce((stream, f) =>
-				f(stream), Zya.STREAMER));
-		})().then(console.log)
+		Zya.restart()
 	}
 
 	$dispatch (action, route = true) {
@@ -34,21 +29,17 @@ const Zya = (Component) => class extends Component {
 	async * stream (data) {
 		for await(const { route, origin, ...obj } of data) {
 			if (origin === this['ℤ'])
-				Zya.ARCHIVE.push({ [origin]: { ...obj, route } })
+				Zya.ARCHIVE.push({ [origin || 'process']: { ...obj, route } })
 
 			if ( route || (route === false && origin === this['ℤ']) )
 				yield * Object.keys(obj).map(key => {
-					// Sets dispatch values to the objects state
-					// Will replace this with stream injection
-					this.$state[key] = obj[key]
 
 					if (this[key])
 						try {
-							const backStream = this[key](obj[key]) || {}
+							const backStream = this[key](obj[key]) || { [key]: obj[key] }
 
 							return {
 								...backStream,
-								[key]: obj[key],
 								origin,
 								route
 							}
@@ -68,15 +59,38 @@ const Zya = (Component) => class extends Component {
 
 
 Object.assign(Zya, {
-	RESOLVE: null,
+	use (...args) {
+		// TODO - JN - Assign unique identifier to process, eg: Constructor name
+	
+		Zya.PROCESSES.push(...args)
 
-	STATE: {},
+		return Zya.restart()
+	},
+
+	async restart () {
+		const preprocessors = Zya.PROCESSES.map(proc => stream => proc(stream, Zya.dispatch))
+
+		const process = [ ...preprocessors, ...Zya.NODES ]
+			.reduce((stream, f) => f(stream), Zya.STREAMER)
+
+		for await(const i of process);
+
+		return
+	},
+
+	dispatch (action) {
+		Zya.RESOLVE && Zya.RESOLVE()
+
+		Zya.STREAM.push({ ...action, route: true })
+	},
+
+	RESOLVE: null,
 
 	STREAM: [],
 
 	ARCHIVE: [],
 
-	PROCESSES: [], // AKA Plugins
+	PROCESSES: [],
 
 	NODES: [],
 
