@@ -13,10 +13,6 @@ customElements.define('test-comp', Zya(
 			console.log('wtf' + this.dataset.id)
 		}
 
-		callbk () {
-			console.log('Called')
-		}
-
 		pointerDown (data) {
 			console.log('Data', data)
 		}
