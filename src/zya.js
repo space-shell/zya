@@ -18,7 +18,7 @@ const Zya = (Component, methods) => class extends Component {
 		// })
 
 		Object.keys(methods).forEach(method => {
-			if (typeof method === 'function')
+			if (typeof methods[method] === 'function')
 				this[method] = methods[method]
 		})
 
