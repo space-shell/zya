@@ -9,22 +9,22 @@ export default async function * (stream, dispatch) {
 		}
 	}
 
-	document.onmousedown = ({ target, x, y }) =>
+	window.onmousedown = ({ target, x, y }) =>
 		dispatch({ pointerDown: { target, x, y } })
 
-	document.ontouchstart = ({ target }) =>
+	window.ontouchstart = ({ target }) =>
 		dispatch({ pointerDown: { target } })
 
-	document.onmouseMove = ({ target, x, y, movementX, movementY }) =>
+	window.onmouseMove = ({ target, x, y, movementX, movementY }) =>
 		dispatch({ pointerMove: { target, x, y, movementX, movementY } })
 
-	document.ontouchMove = ({ target }) =>
+	window.ontouchMove = ({ target }) =>
 		dispatch({ pointerMove: { target } })
 
-	document.onmouseup = ({ target, x, y }) =>
+	window.onmouseup = ({ target, x, y }) =>
 		dispatch({ pointerUp: { target, x, y } })
 
-	document.ontouchend = ({ target }) =>
+	window.ontouchend = ({ target }) =>
 		dispatch({ pointerUp: { target } })
 
 	yield * stream
