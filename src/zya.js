@@ -3,7 +3,7 @@
 // TODO - JN - Check for Class or Function for prototypal inheritance
 // http://www.stackoverflow.com/questions/45747646/what-is-the-es5-way-of-writing-web-component-classes
 
-const Zya = (Component) => class extends Component {
+const Zya = (Component, ...methods) => class extends Component {
 	constructor () {
 		super()
 
@@ -11,6 +11,11 @@ const Zya = (Component) => class extends Component {
 			.random()
 			.toString(36)
 			.substring(2)
+
+		methods.forEach(method  => {
+			if (typeof method === 'function')
+				this[method.name] = method
+		})
 
 		Zya.NODES.push(this.stream.bind(this))
 
