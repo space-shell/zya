@@ -11,7 +11,7 @@ const Zya = (Component, methods) => class extends Component {
 
 		Object.keys(methods).forEach(method => {
 			if (typeof methods[method] === 'function')
-				this.prototype[method] = methods[method]
+				this[method] = methods[method]
 		})
 
 		Zya.NODES.push(this.stream.bind(this))
