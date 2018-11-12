@@ -2,7 +2,7 @@
 
 // TODO - JN - Zya constructor to differentiate between Async functions, Class constructore and functions / Objects
 
-const RESOLVE = null
+let RESOLVE = null
 
 const STREAM = []
 
@@ -25,7 +25,7 @@ const STREAMER = {
 	}
 }
 
-const dispatch = (action = {}, route = true) => {
+const dispatch = function (action = {}, route = true) {
 	RESOLVE && RESOLVE()
 
 	if (Object.keys(action).length !== 0 && action.constructor === Object)
@@ -63,16 +63,13 @@ const stream = async function * (data) {
 	}
 }
 
-const use = (...args) => {
-	// TODO - JN - Assign unique identifier to process, eg: Constructor name
+const uuid = () => Math
+	.random()
+	.toString(36)
+	.substring(2)
 
-	Zya.PROCESSES.push(...args)
-
-	return Zya.restart()
-}
-
-const restart = async () => {
-	const preprocessors = PROCESSES.map(proc => stream => proc(stream, dispatch))
+const init = async function () {
+	const preprocessors = PROCESSES.map(proc => stream => proc(stream, dispatch.bind(proc)))
 
 	const process = [ ...preprocessors, ...NODES ]
 		.reduce((stream, f) => f(stream), STREAMER)
@@ -82,14 +79,17 @@ const restart = async () => {
 	return
 }
 
+const methodsMerge = methods => {
+
+}
+
 const generateClass = (base, methods) => class extends base {
 	constructor () {
 		super()
 
-		this['ℤ'] = Math
-			.random()
-			.toString(36)
-			.substring(2)
+		console.log('Generating Class', this)
+
+		this['ℤ'] = uuid()
 
 		if (methods)
 			Object.keys(methods).forEach(method => {
@@ -97,18 +97,42 @@ const generateClass = (base, methods) => class extends base {
 					this[method] = methods[method]
 			})
 
-		NODES.push(this.stream.bind(this))
+		NODES.push(stream.bind(this))
+	}
 
-		Zya.restart()
+	get $dispatch() {
+		return dispatch.bind(this)
 	}
 }
 
-export default function Zya (base, methods) {
-	console.log(base)
+const generateIterator = (base, methods) => {
+	console.log('Generating Iterator', base)
 
-	if (typeof base === 'function' && base instanceof HTMLElement)
+	// FIXME - JN - Sooo dirty
+	const baseUpdate = Object.assign(base, methods)
+
+	PROCESSES.unshift(baseUpdate)
+
+}
+
+const generateElement = (base, methods) => {
+	console.log('Generating Element', base)
+
+	// FIXME - JN - Sooo dirty
+	const baseUpdate = Object.assign(base, methods)
+
+	NODES.push(stream.bind(baseUpdate))
+}
+
+export default function Zya (base, methods) {
+	if (typeof base === 'function' && Object.getPrototypeOf(base).name === 'HTMLElement')
 		generateClass(base, methods)
 
-	if (typeof Zya === 'function' && base.constructer.name === 'AsyncGeneratorFunction')
-		generatorIterator(base, methods)
+	if (typeof Zya === 'function' && base.constructor.name === 'AsyncGeneratorFunction')
+		generateIterator(base, methods)
+
+	if (typeof base === 'object' && base instanceof HTMLElement)
+		generateElement(base, methods)
+
+	init()
 }

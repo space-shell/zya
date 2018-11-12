@@ -6,27 +6,28 @@ Zya(PointerEvents)
 class Main extends HTMLElement {
 	constructor () {
 		super ()
+
+		this.innerHTML =`
+			<button>${ this.dataset.id }</button>
+		`
 	}
 
 	wtf (data) {
 		console.log('wtf' + this.dataset.id)
 	}
-
-	pointerDown (data) {
-		// console.log('Data', data)
-	}
-
-	connectedCallback () {
-		this.render({})
-	}
-
-	render({ message }) {
-		hyperHTML.bind(this)`
-			<button onclick=${() => this.$dispatch({ wtf: 'google' })}>${ this.dataset.id }</botton>
-			<button onclick=${() => this.$dispatch({ wtf: 'google' }, false)}>${ this.dataset.id } - Me</botton>
-		`
-	}
 }
 
-customElements.define('test-comp', Zya(Main ))
+// customElements.define('test-comp', Zya(Main))
+
+customElements.define('test-comp', Main)
+
+Zya(document.body.querySelector('test-comp'), {
+	onclick () {
+		this.wtf()
+	},
+
+	pointerDown () {
+		this.style.color = 'green'
+	}
+})
 
