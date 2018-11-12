@@ -1,7 +1,7 @@
 import Zya from '../../zya.js'
 import PointerEvents from '../../processes/zya-pointer-events.js'
 
-Zya.use(PointerEvents)
+Zya(PointerEvents)
 
 class Main extends HTMLElement {
 	constructor () {
@@ -28,9 +28,5 @@ class Main extends HTMLElement {
 	}
 }
 
-customElements.define('test-comp', Zya(Main, {
-	pointerDown() {
-		console.log('Pointing Down')
-	}
-}))
+customElements.define('test-comp', Zya(Main ))
 
