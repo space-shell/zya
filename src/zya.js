@@ -119,7 +119,7 @@ const generateElement = (base, methods) => {
 	console.log('Generating Element', base)
 
 	// FIXME - JN - Sooo dirty
-	const baseUpdate = Object.assign(base, methods, dispatch)
+	const baseUpdate = Object.assign(base, methods, { dispatch })
 
 	NODES.push(stream.bind(baseUpdate))
 }
