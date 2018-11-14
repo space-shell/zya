@@ -11,29 +11,41 @@ const upstream = elem => {
 export default async function * (stream, dispatch) {
 	let currentTarget
 
-	const mouseMove = ({ target, x, y, movementX, movementY }) => {
+	const pointerMoveTarget = ({ target, route }) => {
 		if (target !== currentTarget) {
 			currentTarget = target
 
 			dispatch({ pointerTarget: { target } })
+
+			const parent = upstream(target)
+
+			if (parent)
+				dispatch({ pointerTargeted: { target } }, parent)
 		}
 	}
 
 	window.onmousedown = ({ target, x, y }) => {
 		dispatch({ pointerDown: { target, x, y } })
-		dispatch({ pointerClicked: {} }, upstream(target))
+
+		const parent = upstream(target)
+
+		if (parent)
+			dispatch({ pointerClicked: {} }, parent)
 	}
 
 	window.ontouchstart = ({ target }) => {
 		dispatch({ pointerDown: { target } })
 
-		dispatch({ pointerClicked: {} }, upstream(target))
+		const parent = upstream(target)
+
+		if (parent)
+			dispatch({ pointerClicked: {} }, parent)
 	}
 
-	window.onmouseMove = ({ target, x, y, movementX, movementY }) =>
+	window.onmousemove = ({ target, x, y, movementX, movementY }) =>
 		dispatch({ pointerMove: { target, x, y, movementX, movementY } })
 
-	window.ontouchMove = ({ target }) =>
+	window.ontouchmove = ({ target }) =>
 		dispatch({ pointerMove: { target } })
 
 	window.onmouseup = ({ target, x, y }) =>
@@ -42,7 +54,12 @@ export default async function * (stream, dispatch) {
 	window.ontouchend = ({ target }) =>
 		dispatch({ pointerUp: { target } })
 
-	yield * stream
+	for await (const stop of stream) {
+		if (stop.pointerMove)
+			pointerMoveTarget(stop.pointerMove)
+
+		yield stop
+	}
 
 	// for await (const { pointerDown, ...rest } of stream) {
 	// 	if (pointerDown) {
