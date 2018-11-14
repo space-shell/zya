@@ -39,7 +39,7 @@ const stream = async function * (data) {
 		if (origin === this['ℤ'])
 			ARCHIVE.push({ [origin || 'process']: { ...obj, route } })
 
-		if (route === this['ℤ'] || (route === false && origin === this['ℤ']))
+		if (route === true || route === this['ℤ'] || (route === false && origin === this['ℤ']))
 			yield * Object.keys(obj).map(key => {
 				if (this[key])
 					try {
