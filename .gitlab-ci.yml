@@ -13,9 +13,9 @@ github:
     before_script:
         - git config --global user.email "contact@j-n.me.uk"
         - git config --global user.name "space-shell"
-        - git remote set-url origin https://space-shell:$GITHUB_TOKEN@github.com/space-shell/zya.git
     script:
-        - git push -u origin master
+        - git remote add hub https://space-shell:$GITHUB_TOKEN@github.com/space-shell/zya.git
+        - git push -u hub master
     only:
         - master
 
