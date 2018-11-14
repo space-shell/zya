@@ -39,7 +39,7 @@ const stream = async function * (data) {
 		if (origin === this['ℤ'])
 			ARCHIVE.push({ [origin || 'process']: { ...obj, route } })
 
-		if (route || (route === false && origin === this['ℤ']))
+		if (route === this['ℤ'] || (route === false && origin === this['ℤ']))
 			yield * Object.keys(obj).map(key => {
 				if (this[key])
 					try {
@@ -119,7 +119,13 @@ const generateElement = (base, methods) => {
 	console.log('Generating Element', base)
 
 	// FIXME - JN - Sooo dirty
-	const baseUpdate = Object.assign(base, methods, { dispatch })
+	const baseUpdate = Object.assign(
+		base,
+		methods,
+		{
+			['ℤ']: uuid(),
+			dispatch
+		})
 
 	NODES.push(stream.bind(baseUpdate))
 }

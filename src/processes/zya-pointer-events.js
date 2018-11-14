@@ -1,3 +1,13 @@
+const upstream = elem => {
+	if (elem['ℤ'])
+		return elem['ℤ']
+
+	if (elem.parentElement)
+		return upstream(elem.parentElement)
+
+	return false
+}
+
 export default async function * (stream, dispatch) {
 	let currentTarget
 
@@ -9,11 +19,16 @@ export default async function * (stream, dispatch) {
 		}
 	}
 
-	window.onmousedown = ({ target, x, y }) =>
+	window.onmousedown = ({ target, x, y }) => {
 		dispatch({ pointerDown: { target, x, y } })
+		dispatch({ pointerClicked: {} }, upstream(target))
+	}
 
-	window.ontouchstart = ({ target }) =>
+	window.ontouchstart = ({ target }) => {
 		dispatch({ pointerDown: { target } })
+
+		dispatch({ pointerClicked: {} }, upstream(target))
+	}
 
 	window.onmouseMove = ({ target, x, y, movementX, movementY }) =>
 		dispatch({ pointerMove: { target, x, y, movementX, movementY } })

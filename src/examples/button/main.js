@@ -21,7 +21,9 @@ class Main extends HTMLElement {
 
 customElements.define('test-comp', Main)
 
-Zya(document.body.querySelector('test-comp'), {
+const elems = document.body.querySelectorAll('test-comp')
+
+Zya(elems[0], {
 	onclick () {
 		this.wtf()
 	},
@@ -31,3 +33,13 @@ Zya(document.body.querySelector('test-comp'), {
 	}
 })
 
+Zya(elems[1], {
+	onclick () {
+		this.wtf()
+	},
+
+	pointerClicked () {
+		console.log('CLOCKED')
+		this.style.color = 'green'
+	}
+})
