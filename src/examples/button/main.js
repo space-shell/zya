@@ -43,3 +43,14 @@ Zya(elems[1], {
 		this.style.color = 'green'
 	}
 })
+
+Zya(elems[2], {
+	onclick () {
+		this.wtf()
+	},
+
+	pointerTargeted () {
+		console.log('Target')
+		this.style.backgroundColor = 'red'
+	}
+})
