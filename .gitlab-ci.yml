@@ -13,7 +13,7 @@ github:
     before_script:
         - git config --global user.email "contact@j-n.me.uk"
         - git config --global user.name "space-shell"
-        - git remote et-url origin https://space-shell:${GITHUB_TOKEN}@github.com/space-shell/zya.git"
+        - git remote et-url origin "https://space-shell:${GITHUB_TOKEN}@github.com/space-shell/zya.git"
     script:
         - git push -u origin master
     only:
