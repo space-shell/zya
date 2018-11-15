@@ -30,7 +30,7 @@ export default async function * (stream, dispatch) {
 		const parent = upstream(target)
 
 		if (parent)
-			dispatch({ pointerClicked: {} }, parent)
+			dispatch({ pointerClicked: { target } }, parent)
 	}
 
 	window.ontouchstart = ({ target }) => {
@@ -39,7 +39,7 @@ export default async function * (stream, dispatch) {
 		const parent = upstream(target)
 
 		if (parent)
-			dispatch({ pointerClicked: {} }, parent)
+			dispatch({ pointerClicked: { target } }, parent)
 	}
 
 	window.onmousemove = ({ target, x, y, movementX, movementY }) =>
