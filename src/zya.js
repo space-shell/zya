@@ -140,5 +140,8 @@ export default function Zya (base, methods) {
 	if (typeof base === 'object' && base instanceof HTMLElement)
 		generateElement(base, methods)
 
+	if (typeof base === 'string')
+		generateElement(document.body.querySelector(base), methods)
+
 	init()
 }
