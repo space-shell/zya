@@ -30,7 +30,7 @@ export default async function * (stream, dispatch) {
 		const parent = upstream(target)
 
 		if (parent)
-			dispatch({ pointerClicked: {} }, parent)
+			dispatch({ pointerClicked: { target } }, parent)
 	}
 
 	window.ontouchstart = ({ target }) => {
@@ -39,7 +39,7 @@ export default async function * (stream, dispatch) {
 		const parent = upstream(target)
 
 		if (parent)
-			dispatch({ pointerClicked: {} }, parent)
+			dispatch({ pointerClicked: { target } }, parent)
 	}
 
 	window.onmousemove = ({ target, x, y, movementX, movementY }) =>
@@ -60,43 +60,5 @@ export default async function * (stream, dispatch) {
 
 		yield stop
 	}
-
-	// for await (const { pointerDown, ...rest } of stream) {
-	// 	if (pointerDown) {
-	// 		for await (const { pointerMove, pointerUp, ...rest } of stream) {
-	// 			if (pointerMove)
-	// 				yield {
-	// 					drag: {
-	// 						target: pointerDown.target,
-
-	// 						start: {
-	// 							x: pointerDown.screenX,
-	// 							y: pointerDown.screenY,
-	// 						},
-
-	// 						current: {
-	// 							x: pointerMove.screenX,
-	// 							y: pointerMove.screenY,
-	// 						},
-
-	// 						delta: {
-	// 							x: pointerMove.screenX - pointerDown.screenX,
-	// 							y: pointerMove.screenY - pointerDown.screenY,
-	// 						}
-	// 					}
-	// 				}
-
-	// 			if (pointerUp) {
-	// 				yield { drop: pointerUp }
-
-	// 				break
-	// 			}
-
-	// 			yield { pointerMove, pointerUp, ...rest }
-	// 		}
-	// 	}
-
-	// 	yield { pointerDown, ...rest }
-	// }
 }
 
