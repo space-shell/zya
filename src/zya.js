@@ -2,11 +2,11 @@
 
 // TODO - JN - Zya constructor to differentiate between Async functions, Class constructore and functions / Objects
 
+export const ARCHIVE = []
+
 let RESOLVE = null
 
 const STREAM = []
-
-const ARCHIVE = []
 
 const PROCESSES = []
 
