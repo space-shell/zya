@@ -43,20 +43,12 @@ const stream = async function * (data) {
 		if (route === true || route === this['ℤ'] || (route === false && origin === this['ℤ']))
 			yield * Object.keys(obj).map(key => {
 				if (this[key] && typeof this[key] === 'function')
-					try {
-						const backStream =
-							{ [key]: this[key](obj[key])}
-							|| { [key]: obj[key] }
+					const backStream = this[key](obj[key]) || {}
 
-						return {
-							...backStream,
-							origin,
-							route
-						}
-					} catch (e) {
-						console.log(e)
-
-						return { [key]: obj[key], origin, route }
+					return {
+						[key]: Object.assign(obj[key], backStream),
+						origin,
+						route
 					}
 				else
 					return { [key]: obj[key], origin, route }
