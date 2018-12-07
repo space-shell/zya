@@ -36,14 +36,17 @@ const dispatch = function (action = {}, route = true) {
 
 const stream = async function * (data) {
 	for await(const { route, origin, ...obj } of data) {
+		// TODO - JN - Split into archiver functuion
 		if (origin === this['ℤ'])
 			ARCHIVE.push({ [origin || 'process']: { ...obj, route } })
 
 		if (route === true || route === this['ℤ'] || (route === false && origin === this['ℤ']))
 			yield * Object.keys(obj).map(key => {
-				if (this[key])
+				if (this[key] && typeof this[key] === 'function')
 					try {
-						const backStream = this[key](obj[key]) || { [key]: obj[key] }
+						const backStream =
+							{ [key]: this[key](obj[key])}
+							|| { [key]: obj[key] }
 
 						return {
 							...backStream,
