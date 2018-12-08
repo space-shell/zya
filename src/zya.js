@@ -42,7 +42,7 @@ const stream = async function * (data) {
 
 		if (route === true || route === this['ℤ'] || (route === false && origin === this['ℤ']))
 			yield * Object.keys(obj).map(key => {
-				if (this[key] && typeof this[key] === 'function')
+				if (this[key] && typeof this[key] === 'function') {
 					const backStream = this[key](obj[key]) || {}
 
 					return {
@@ -50,8 +50,9 @@ const stream = async function * (data) {
 						origin,
 						route
 					}
-				else
+				} else {
 					return { [key]: obj[key], origin, route }
+				}
 			})
 		else
 			yield { ...obj, origin, route }
