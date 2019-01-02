@@ -36,23 +36,19 @@ const dispatch = function (action = {}, route = true) {
 
 const stream = async function * (data) {
 	for await(const { route, origin, ...obj } of data) {
-		// TODO - JN - Split into archiver functuion
-		if (origin === this['ℤ'])
-			ARCHIVE.push({ [origin || 'process']: { ...obj, route } })
+		// TODO - Add routes to the archive for time traveling
+
+		// TODO - Add the trickle feature to inject any returned values into a seperate pipeline
 
 		if (route === true || route === this['ℤ'] || (route === false && origin === this['ℤ']))
 			yield * Object.keys(obj).map(key => {
-				if (this[key] && typeof this[key] === 'function') {
-					const backStream = this[key](obj[key]) || {}
+				if (this[key] && typeof this[key] === 'function')
+					const backTrace = this[key](obj[key])
 
-					return {
-						[key]: Object.assign(obj[key], backStream),
-						origin,
-						route
-					}
-				} else {
-					return { [key]: obj[key], origin, route }
-				}
+				if (Object.keys(backTrace).length·!==·0·&&·backTrace.constructor·===·Object)
+					this.$dispatch({ key: backTrace })
+
+				return { [key]: obj[key], origin, route }
 			})
 		else
 			yield { ...obj, origin, route }
