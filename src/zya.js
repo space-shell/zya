@@ -44,10 +44,10 @@ const stream = async function * (data) {
 			yield * Object.keys(obj).map(key => {
 				if (this[key] && typeof this[key] === 'function') {
 					const backTrace = this[key](obj[key])
-				}
 
-				if (Object.keys(backTrace).length !== 0 && backTrace.constructor === Object)
-					this.$dispatch({ key: backTrace })
+					if (backTrace && Object.keys(backTrace).length !== 0 && backTrace.constructor === Object)
+						this.$dispatch({ key: backTrace })
+				}
 
 				return { [key]: obj[key], origin, route }
 			})
