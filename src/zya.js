@@ -2,11 +2,11 @@
 
 // TODO - JN - Zya constructor to differentiate between Async functions, Class constructore and functions / Objects
 
-export const ARCHIVE = []
-
 let RESOLVE = null
 
 const STREAM = []
+
+const ARCHIVE = []
 
 const PROCESSES = []
 
@@ -42,8 +42,9 @@ const stream = async function * (data) {
 
 		if (route === true || route === this['ℤ'] || (route === false && origin === this['ℤ']))
 			yield * Object.keys(obj).map(key => {
-				if (this[key] && typeof this[key] === 'function')
+				if (this[key] && typeof this[key] === 'function') {
 					const backTrace = this[key](obj[key])
+				}
 
 				if (Object.keys(backTrace).length·!==·0·&&·backTrace.constructor·===·Object)
 					this.$dispatch({ key: backTrace })
@@ -131,9 +132,6 @@ export default function Zya (base, methods) {
 
 	if (typeof base === 'object' && base instanceof HTMLElement)
 		generateElement(base, methods)
-
-	if (typeof base === 'string')
-		generateElement(document.body.querySelector(base), methods)
 
 	init()
 }
