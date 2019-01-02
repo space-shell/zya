@@ -46,7 +46,7 @@ const stream = async function * (data) {
 					const backTrace = this[key](obj[key])
 				}
 
-				if (Object.keys(backTrace).length·!==·0·&&·backTrace.constructor·===·Object)
+				if (Object.keys(backTrace).length !== 0 && backTrace.constructor === Object)
 					this.$dispatch({ key: backTrace })
 
 				return { [key]: obj[key], origin, route }
