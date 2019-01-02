@@ -111,7 +111,6 @@ const generateIterator = (base, methods) => {
 const generateElement = (base, methods) => {
 	console.log('Generating Element', base)
 
-	// FIXME - JN - Sooo dirty
 	const baseUpdate = Object.assign(
 		base,
 		methods,
@@ -127,11 +126,14 @@ export default function Zya (base, methods) {
 	if (typeof base === 'function' && Object.getPrototypeOf(base).name === 'HTMLElement')
 		generateClass(base, methods)
 
-	if (typeof Zya === 'function' && base.constructor.name === 'AsyncGeneratorFunction')
+	if (typeof base === 'function' && base.constructor.name === 'AsyncGeneratorFunction')
 		generateIterator(base, methods)
 
 	if (typeof base === 'object' && base instanceof HTMLElement)
 		generateElement(base, methods)
+
+	if (typeof base === 'string')
+		generateElement(document.body.querySelector(base), methods)
 
 	init()
 }
