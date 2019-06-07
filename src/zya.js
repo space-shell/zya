@@ -112,7 +112,6 @@ const generateIterator = (base, methods) => {
 	const baseUpdate = Object.assign(base, methods)
 
 	PROCESSES.unshift(baseUpdate)
-
 }
 
 const generateElement = (base, methods) => {
